@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 
 class Palette {
   // Colors
-  static const Color primaryColor = Color.fromRGBO(1, 1, 1, 1);
-  static const Color secondaryColor = Color.fromRGBO(26, 39, 45, 1);
-  static const Color drawerColor = Color.fromRGBO(18, 18, 18, 1);
-  static final Color redColor = Colors.red.shade500;
-  static final Color blueColor = Colors.blue.shade300;
+  static const blackColor = Color.fromRGBO(1, 1, 1, 1); // primary color
+  static const greyColor = Color.fromRGBO(26, 39, 45, 1); // secondary color
+  static const drawerColor = Color.fromRGBO(18, 18, 18, 1);
+  static const whiteColor = Colors.white;
+  static var redColor = Colors.red.shade500;
+  static var blueColor = Colors.blue.shade300;
 
   static final darkModeAppTheme = ThemeData.dark().copyWith(
     colorScheme: ColorScheme.dark(
       primary: redColor,
-      background: primaryColor,
+      background: drawerColor,
     ),
-    scaffoldBackgroundColor: primaryColor,
-    cardColor: secondaryColor,
+    scaffoldBackgroundColor: blackColor,
+    cardColor: greyColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: drawerColor,
       iconTheme: IconThemeData(
@@ -32,12 +33,12 @@ class Palette {
       background: Colors.white,
     ),
     scaffoldBackgroundColor: Colors.white,
-    cardColor: secondaryColor,
+    cardColor: greyColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
       elevation: 0,
       iconTheme: IconThemeData(
-        color: primaryColor,
+        color: blackColor,
       ),
     ),
     drawerTheme: const DrawerThemeData(
