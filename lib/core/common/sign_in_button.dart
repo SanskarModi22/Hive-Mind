@@ -7,8 +7,8 @@ import '../constants/constants.dart';
 
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
-  void _signInWithGoogle(WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle();
+  void _signInWithGoogle(BuildContext context, WidgetRef ref) {
+    ref.read(authControllerProvider).signInWithGoogle(context);
   }
 
   @override
@@ -16,7 +16,7 @@ class SignInButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: ElevatedButton.icon(
-        onPressed: () => _signInWithGoogle(ref),
+        onPressed: () => _signInWithGoogle(context, ref),
         icon: Image.asset(
           Constants.googlePath,
           width: 35,
