@@ -8,7 +8,8 @@ import '../constants/constants.dart';
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
   void _signInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle(context);
+    ref.read(authControllerProvider.notifier).signInWithGoogle(context);
+    //This give us access to auth controller class
   }
 
   @override
