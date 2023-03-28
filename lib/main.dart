@@ -50,6 +50,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                   getData(ref, data);
                   if (userModel != null) {
                     return loggedInRoute;
+                    print("Log hua tha");
                   }
                 }
                 return loggedOutRoute;
