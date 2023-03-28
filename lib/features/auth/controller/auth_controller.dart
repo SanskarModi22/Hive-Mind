@@ -7,6 +7,8 @@ import 'package:reddit_clone/models/user_model.dart';
 import '../../../core/utils.dart';
 
 final userProvider = StateProvider<UserModel?>((ref) => null);
+//Ek global provider setup kiya hain
+//Jo ki user ki details ka status track karta hain
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {
   return AuthController(

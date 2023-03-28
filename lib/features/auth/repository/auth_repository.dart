@@ -14,11 +14,13 @@ import '../../../models/user_model.dart';
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
     firestore: ref.read(firestoreProvider),
+    //Provider is great for accessing dependencies and objects that don’t change.
     auth: ref.read(authProvider),
     googleSignIn: ref.read(googleSignInProvider),
   ),
 );
 
+//Provides global instance of Auth Repository instance in the whole project
 class AuthRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
@@ -62,7 +64,11 @@ class AuthRepository {
       }
       return right(userModel);
     } on FirebaseException catch (e) {
-      throw e.message!;
+      return left(
+        Failure(
+          e.message.toString(),
+        ),
+      );
     } catch (e) {
       return left(
         Failure(

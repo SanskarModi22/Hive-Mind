@@ -31,16 +31,19 @@ class _MyAppState extends ConsumerState<MyApp> {
   UserModel? userModel;
   void getData(WidgetRef ref, User data) async {
     userModel = await ref
-        .watch(authControllerProvider.notifier)
-        .getUserData(data.uid)
-        .first;
+        .watch(
+            authControllerProvider.notifier) //Instance of AuthController class
+        .getUserData(data.uid) //User data will be fetched
+        .first; //Only first element in the stream will be fetched
     ref.read(userProvider.notifier).update((state) => userModel);
+    //userProvider ka jo model hoga usko update karenge
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return ref.watch(authStateChangeProvider).when(
+        //Here data means that whether the user is already signed in or signed out
         data: (data) => MaterialApp.router(
               title: 'Reddit Clone',
               debugShowCheckedModeBanner: false,
@@ -49,8 +52,8 @@ class _MyAppState extends ConsumerState<MyApp> {
                 if (data != null) {
                   getData(ref, data);
                   if (userModel != null) {
+                    //User ka data is availaible
                     return loggedInRoute;
-                    print("Log hua tha");
                   }
                 }
                 return loggedOutRoute;
