@@ -33,6 +33,20 @@ class CommunityRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  Stream<List<Community>> getUserCommunities(String uid) {
+    return _communities
+        .where('members', arrayContains: uid)
+        .snapshots()
+        .map((community) {
+      List<Community> communities = [];
+      for (var commu in community.docs) {
+        communities
+            .add(Community.fromMap(commu.data() as Map<String, dynamic>));
+      }
+      return communities;
+    });
+  }
 }
 
 //We will never use ref in repository class
