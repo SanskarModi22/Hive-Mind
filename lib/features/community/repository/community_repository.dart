@@ -20,7 +20,9 @@ class CommunityRepository {
       _firestore.collection((FirebaseConstants.communitiesCollection));
   FutureVoid createCommunity(Community community) async {
     try {
-      var communityDoc = await _communities.doc(community.name).get();
+      var communityDoc = await _communities
+          .doc(community.name)
+          .get(); //Searching if the community name already exits or not
       if (communityDoc.exists) {
         throw 'Community with the same name already exists';
       }
@@ -32,3 +34,5 @@ class CommunityRepository {
     }
   }
 }
+
+//We will never use ref in repository class

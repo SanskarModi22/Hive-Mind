@@ -8,6 +8,12 @@ import 'package:routemaster/routemaster.dart';
 import '../../../core/utils.dart';
 import '../../../models/community_model.dart';
 
+final communityControllerProvider =
+    StateNotifierProvider<CommunityController, bool>((ref) {
+  return CommunityController(
+      communityRepository: ref.read(communityRepositoryProvider), ref: ref);
+});
+
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
   final Ref _ref;
@@ -18,18 +24,21 @@ class CommunityController extends StateNotifier<bool> {
         super(false);
 
   void createCommunity(String name, BuildContext context) async {
-    state = true;
+    state = true; //loading is set to true
     final uid = _ref.read(userProvider)?.uid ?? '';
+    //Uid of the user is there or not (whether user is logged in or not)
     Community community = Community(
       id: name,
       name: name,
       banner: Constants.bannerDefault,
       avatar: Constants.avatarDefault,
-      members: [uid],
-      mods: [uid],
+      members: [
+        uid
+      ], //Whatever members are there will be stored in the form of list
+      mods: [uid], //UID of moderators
     );
     final res = await _communityRepository.createCommunity(community);
-    state = false;
+    state = false; //loading is set to false
     res.fold((l) => showSnackBar(context: context, message: l.message), (r) {
       showSnackBar(context: context, message: 'Community created successfully');
       Routemaster.of(context).pop();

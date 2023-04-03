@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/features/community/controller/community_controller.dart';
 
 class CreateCommunityScreen extends ConsumerStatefulWidget {
   const CreateCommunityScreen({super.key});
@@ -15,6 +16,12 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   void dispose() {
     super.dispose();
     communityNameController.dispose();
+  }
+
+  void createCommunity() {
+    final controllerProvider = ref.read(communityControllerProvider.notifier);
+    controllerProvider.createCommunity(
+        communityNameController.text.trim(), context);
   }
 
   @override
@@ -42,7 +49,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: createCommunity,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
