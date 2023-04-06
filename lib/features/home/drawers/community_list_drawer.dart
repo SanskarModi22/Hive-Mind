@@ -37,6 +37,9 @@ class CommunityListDrawer extends ConsumerWidget {
                       itemBuilder: (BuildContext context, int index) {
                         final community = communities[index];
                         return ListTile(
+                          onTap: () {
+                            navigateToCommunity(context, community);
+                          },
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(community.avatar),
                           ),
