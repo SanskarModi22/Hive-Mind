@@ -45,6 +45,10 @@ class AuthController extends StateNotifier<bool> {
   //On failure it will show a snackbar and on success it will update the previous userModel
 
   Stream<UserModel> getUserData(String uid) => _authRepository.getUserData(uid);
+
+  void logout() async {
+    _authRepository.logout();
+  }
 }
 
 //UI - Repository - Controller

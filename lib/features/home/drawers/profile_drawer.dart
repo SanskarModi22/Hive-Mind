@@ -7,6 +7,9 @@ import '../../../widgets/custom_text.dart';
 
 class ProfileDrawer extends ConsumerWidget {
   const ProfileDrawer({super.key});
+  void logout(WidgetRef ref) {
+    ref.watch(authControllerProvider.notifier).logout();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +52,7 @@ class ProfileDrawer extends ConsumerWidget {
               title: const CustomText(
                 text: "Logout",
               ),
-              onTap: () {},
+              onTap: () => logout(ref),
             ),
             Switch.adaptive(
               value: true,
