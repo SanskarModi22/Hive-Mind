@@ -7,6 +7,7 @@ import 'package:reddit_clone/core/providers/firebase_providers.dart';
 import '../../../core/failure.dart';
 import '../../../core/typedef.dart';
 import '../../../models/community_model.dart';
+import '../../../models/post_model.dart';
 
 final communityRepositoryProvider = Provider((ref) {
   return CommunityRepository(firestore: ref.watch(firestoreProvider));
@@ -18,6 +19,8 @@ class CommunityRepository {
       : _firestore = firestore;
   CollectionReference get _communities =>
       _firestore.collection((FirebaseConstants.communitiesCollection));
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postCollection);
   FutureVoid createCommunity(Community community) async {
     try {
       var communityDoc = await _communities
@@ -119,6 +122,22 @@ class CommunityRepository {
   Stream<Community> getCommunityByName(String name) {
     return _communities.doc(name).snapshots().map(
         (event) => Community.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _posts
+        .where('communityName', isEqualTo: name)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => Post.fromMap(
+                  e.data() as Map<String, dynamic>,
+                ),
+              )
+              .toList(),
+        );
   }
 }
 

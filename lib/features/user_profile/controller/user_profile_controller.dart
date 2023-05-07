@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
+import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../repository/user_profile_repository.dart';
@@ -21,9 +22,9 @@ final userProfileControllerProvider =
   );
 });
 
-// final getUserPostsProvider = StreamProvider.family((ref, String uid) {
-//   return ref.read(userProfileControllerProvider.notifier).getUserPosts(uid);
-// });
+final getUserPostsProvider = StreamProvider.family((ref, String uid) {
+  return ref.read(userProfileControllerProvider.notifier).getUserPosts(uid);
+});
 
 class UserProfileController extends StateNotifier<bool> {
   final UserProfileRepository _userProfileRepository;
@@ -89,9 +90,9 @@ class UserProfileController extends StateNotifier<bool> {
     );
   }
 
-  // Stream<List<Post>> getUserPosts(String uid) {
-  //   return _userProfileRepository.getUserPosts(uid);
-  // }
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _userProfileRepository.getUserPosts(uid);
+  }
 
   // void updateUserKarma(UserKarma karma) async {
   //   UserModel user = _ref.read(userProvider)!;

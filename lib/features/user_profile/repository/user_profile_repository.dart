@@ -5,6 +5,7 @@ import '../../../core/constants/firebase_constants.dart';
 import '../../../core/failure.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/typedef.dart';
+import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
 
 final userProfileRepositoryProvider = Provider((ref) {
@@ -18,8 +19,8 @@ class UserProfileRepository {
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.userCollection);
-  // CollectionReference get _posts =>
-  //     _firestore.collection(FirebaseConstants.postCollection);
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postCollection);
 
   FutureVoid editProfile(UserModel user) async {
     try {
@@ -31,21 +32,21 @@ class UserProfileRepository {
     }
   }
 
-  // Stream<List<Post>> getUserPosts(String uid) {
-  //   return _posts
-  //       .where('uid', isEqualTo: uid)
-  //       .orderBy('createdAt', descending: true)
-  //       .snapshots()
-  //       .map(
-  //         (event) => event.docs
-  //             .map(
-  //               (e) => Post.fromMap(
-  //                 e.data() as Map<String, dynamic>,
-  //               ),
-  //             )
-  //             .toList(),
-  //       );
-  // }
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _posts
+        .where('uid', isEqualTo: uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => Post.fromMap(
+                  e.data() as Map<String, dynamic>,
+                ),
+              )
+              .toList(),
+        );
+  }
 
   // FutureVoid updateUserKarma(UserModel user) async {
   //   try {

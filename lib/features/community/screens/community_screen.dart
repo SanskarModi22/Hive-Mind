@@ -5,6 +5,7 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 import '../../../widgets/custom_text.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../controller/community_controller.dart';
@@ -28,96 +29,112 @@ class CommunityScreen extends ConsumerWidget {
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
             data: (community) => NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverAppBar(
-                      expandedHeight: 150,
-                      floating: true,
-                      snap: true,
-                      flexibleSpace: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Image.network(
-                              community.banner,
-                              fit: BoxFit.cover,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    expandedHeight: 150,
+                    floating: true,
+                    snap: true,
+                    flexibleSpace: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Image.network(
+                            community.banner,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(community.avatar),
+                              radius: 35,
                             ),
-                          )
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                text: "r/${community.name}",
+                                fontSize: 19.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              community.mods.contains(user.uid)
+                                  ? OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 25,
+                                        ),
+                                      ),
+                                      onPressed: () =>
+                                          navigateToModTools(context),
+                                      child: const CustomText(
+                                        text: "Mod Tools",
+                                      ),
+                                    )
+                                  : OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 25,
+                                        ),
+                                      ),
+                                      onPressed: () => joinCommunity(
+                                          ref, community, context),
+                                      child: CustomText(
+                                        text:
+                                            community.members.contains(user.uid)
+                                                ? "Joined"
+                                                : "Join",
+                                      ),
+                                    ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: CustomText(
+                              text: "${community.members.length} members",
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.all(16),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(community.avatar),
-                                radius: 35,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  text: "r/${community.name}",
-                                  fontSize: 19.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                community.mods.contains(user.uid)
-                                    ? OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 25,
-                                          ),
-                                        ),
-                                        onPressed: () =>
-                                            navigateToModTools(context),
-                                        child: const CustomText(
-                                          text: "Mod Tools",
-                                        ),
-                                      )
-                                    : OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 25,
-                                          ),
-                                        ),
-                                        onPressed: () => joinCommunity(
-                                            ref, community, context),
-                                        child: CustomText(
-                                          text: community.members
-                                                  .contains(user.uid)
-                                              ? "Joined"
-                                              : "Join",
-                                        ),
-                                      ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: CustomText(
-                                text: "${community.members.length} members",
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ];
-                },
-                body: const Text("displaying community posts")),
+                  ),
+                ];
+              },
+              body: ref.watch(getCommunityPostsProvider(name)).when(
+                    data: (data) {
+                      return ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final post = data[index];
+                          return PostCard(post: post);
+                        },
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      // print(error);
+                      return ErrorText(error: error.toString());
+                    },
+                    loading: () => const Loader(),
+                  ),
+            ),
             error: (error, stackTrace) => ErrorText(error: error.toString()),
             loading: () => const Loader(),
           ),
