@@ -6,6 +6,7 @@ import '../../../core/constants/firebase_constants.dart';
 import '../../../core/failure.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/typedef.dart';
+import '../../../models/community_model.dart';
 import '../../../models/post_model.dart';
 
 final postRepositoryProvider = Provider((ref) {
@@ -36,22 +37,22 @@ class PostRepository {
     }
   }
 
-  // Stream<List<Post>> fetchUserPosts(List<Community> communities) {
-  //   return _posts
-  //       .where('communityName',
-  //           whereIn: communities.map((e) => e.name).toList())
-  //       .orderBy('createdAt', descending: true)
-  //       .snapshots()
-  //       .map(
-  //         (event) => event.docs
-  //             .map(
-  //               (e) => Post.fromMap(
-  //                 e.data() as Map<String, dynamic>,
-  //               ),
-  //             )
-  //             .toList(),
-  //       );
-  // }
+  Stream<List<Post>> fetchUserPosts(List<Community> communities) {
+    return _posts
+        .where('communityName',
+            whereIn: communities.map((e) => e.name).toList())
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => Post.fromMap(
+                  e.data() as Map<String, dynamic>,
+                ),
+              )
+              .toList(),
+        );
+  }
 
   // Stream<List<Post>> fetchGuestPosts() {
   //   return _posts
@@ -69,15 +70,15 @@ class PostRepository {
   //       );
   // }
 
-  // FutureVoid deletePost(Post post) async {
-  //   try {
-  //     return right(_posts.doc(post.id).delete());
-  //   } on FirebaseException catch (e) {
-  //     throw e.message!;
-  //   } catch (e) {
-  //     return left(Failure(e.toString()));
-  //   }
-  // }
+  FutureVoid deletePost(Post post) async {
+    try {
+      return right(_posts.doc(post.id).delete());
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 
   // void upvote(Post post, String userId) async {
   //   if (post.downvotes.contains(userId)) {

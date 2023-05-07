@@ -7,7 +7,7 @@ void showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.black),
       ),
       backgroundColor: color,
     ),

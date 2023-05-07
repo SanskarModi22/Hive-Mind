@@ -23,11 +23,11 @@ final postControllerProvider =
   );
 });
 
-// final userPostsProvider =
-//     StreamProvider.family((ref, List<Community> communities) {
-//   final postController = ref.watch(postControllerProvider.notifier);
-//   return postController.fetchUserPosts(communities);
-// });
+final userPostsProvider =
+    StreamProvider.family((ref, List<Community> communities) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchUserPosts(communities);
+});
 
 // final guestPostsProvider = StreamProvider((ref) {
 //   final postController = ref.watch(postControllerProvider.notifier);
@@ -66,7 +66,6 @@ class PostController extends StateNotifier<bool> {
     state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
-
     final Post post = Post(
       id: postId,
       title: title,
@@ -178,25 +177,27 @@ class PostController extends StateNotifier<bool> {
     });
   }
 
-  // Stream<List<Post>> fetchUserPosts(List<Community> communities) {
-  //   if (communities.isNotEmpty) {
-  //     return _postRepository.fetchUserPosts(communities);
-  //   }
-  //   return Stream.value([]);
-  // }
+  Stream<List<Post>> fetchUserPosts(List<Community> communities) {
+    if (communities.isNotEmpty) {
+      return _postRepository.fetchUserPosts(communities);
+    }
+    return Stream.value([]);
+  }
 
   // Stream<List<Post>> fetchGuestPosts() {
   //   return _postRepository.fetchGuestPosts();
   // }
 
-  // void deletePost(Post post, BuildContext context) async {
-  //   final res = await _postRepository.deletePost(post);
-  //   _ref
-  //       .read(userProfileControllerProvider.notifier)
-  //       .updateUserKarma(UserKarma.deletePost);
-  //   res.fold((l) => null,
-  //       (r) => showSnackBar(context, 'Post Deleted successfully!'));
-  // }
+  void deletePost(Post post, BuildContext context) async {
+    final res = await _postRepository.deletePost(post);
+    // _ref
+    //     .read(userProfileControllerProvider.notifier)
+    //     .updateUserKarma(UserKarma.deletePost);
+    res.fold(
+        (l) => null,
+        (r) => showSnackBar(
+            context: context, message: 'Post Deleted successfully!'));
+  }
 
   // void upvote(Post post) async {
   //   final uid = _ref.read(userProvider)!.uid;
