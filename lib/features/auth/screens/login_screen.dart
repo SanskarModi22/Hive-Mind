@@ -8,6 +8,9 @@ import '../controller/auth_controller.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
+  void signInAsGuest(WidgetRef ref, BuildContext context) {
+    ref.read(authControllerProvider.notifier).signInAsGuest(context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +24,7 @@ class LoginScreen extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () => signInAsGuest(ref, context),
             child: const Text(
               'Skip',
               style: TextStyle(
