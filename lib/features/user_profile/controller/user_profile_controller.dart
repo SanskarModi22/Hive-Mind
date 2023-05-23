@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
 import '../../../models/post_model.dart';
@@ -94,12 +95,12 @@ class UserProfileController extends StateNotifier<bool> {
     return _userProfileRepository.getUserPosts(uid);
   }
 
-  // void updateUserKarma(UserKarma karma) async {
-  //   UserModel user = _ref.read(userProvider)!;
-  //   user = user.copyWith(karma: user.karma + karma.karma);
+  void updateUserKarma(UserKarma karma) async {
+    UserModel user = _ref.read(userProvider)!;
+    user = user.copyWith(karma: user.karma + karma.karma);
 
-  //   final res = await _userProfileRepository.updateUserKarma(user);
-  //   res.fold((l) => null,
-  //       (r) => _ref.read(userProvider.notifier).update((state) => user));
-  // }
+    final res = await _userProfileRepository.updateUserKarma(user);
+    res.fold((l) => null,
+        (r) => _ref.read(userProvider.notifier).update((state) => user));
+  }
 }
