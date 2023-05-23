@@ -9,6 +9,7 @@ import '../../features/auth/controller/auth_controller.dart';
 import '../../features/community/controller/community_controller.dart';
 import '../../features/post/controller/post_controller.dart';
 import '../../models/post_model.dart';
+import '../../responsive/responsive.dart';
 import '../../theme/pallete.dart';
 import '../constants/constants.dart';
 import 'error_text.dart';
@@ -61,7 +62,8 @@ class PostCard extends ConsumerWidget {
 
     final currentTheme = ref.watch(themeNotifierProvider);
 
-    return Column(
+    return Responsive(
+        child: Column(
       children: [
         Container(
           decoration: BoxDecoration(
@@ -346,6 +348,6 @@ class PostCard extends ConsumerWidget {
         ),
         const SizedBox(height: 10),
       ],
-    );
+    ));
   }
 }

@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../theme/pallete.dart';
@@ -56,6 +58,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Icons.search,
             ),
           ),
+          IconButton(
+            onPressed: () {
+              Routemaster.of(context).push('/add-post');
+            },
+            icon: const Icon(Icons.add),
+          ),
           Builder(builder: (context) {
             return GestureDetector(
               child: CircleAvatar(
@@ -69,7 +77,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Constants.tabWidgets[_page],
       drawer: const CommunityListDrawer(),
       endDrawer: isGuest ? null : const ProfileDrawer(),
-      bottomNavigationBar: isGuest
+      bottomNavigationBar: isGuest || kIsWeb
           ? null
           : CupertinoTabBar(
               activeColor: currentTheme.iconTheme.color,

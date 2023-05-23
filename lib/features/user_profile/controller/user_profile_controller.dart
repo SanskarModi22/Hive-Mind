@@ -56,7 +56,7 @@ class UserProfileController extends StateNotifier<bool> {
         path: 'users/profile',
         id: user.uid,
         file: profileFile, //Profile Pic update
-        // webFile: profileWebFile,
+        webFile: profileWebFile,
       );
       res.fold(
         (l) => showSnackBar(context: context, message: l.message),
@@ -69,7 +69,7 @@ class UserProfileController extends StateNotifier<bool> {
         path: 'users/banner',
         id: user.uid,
         file: bannerFile, //Banner File update
-        // webFile: bannerWebFile,
+        webFile: bannerWebFile,
       );
       res.fold(
         (l) => showSnackBar(context: context, message: l.message),

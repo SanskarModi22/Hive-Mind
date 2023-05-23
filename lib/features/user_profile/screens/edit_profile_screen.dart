@@ -8,6 +8,7 @@ import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/utils.dart';
+import '../../../responsive/responsive.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../controller/user_profile_controller.dart';
 
@@ -105,94 +106,95 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             ),
             body: isLoading
                 ? const Loader()
-                :
-                //  Responsive(
-                //     child:
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 200,
-                          child: Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: selectBannerImage,
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [10, 4],
-                                  strokeCap: StrokeCap.round,
-                                  // color: currentTheme
-                                  //     .textTheme.bodyMedium!.color!,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                : Responsive(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 200,
+                            child: Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: selectBannerImage,
+                                  child: DottedBorder(
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [10, 4],
+                                    strokeCap: StrokeCap.round,
+                                    // color: currentTheme
+                                    //     .textTheme.bodyMedium!.color!,
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: bannerWebFile != null
+                                          ? Image.memory(bannerWebFile!)
+                                          : bannerFile != null
+                                              ? Image.file(bannerFile!)
+                                              : user.banner.isEmpty ||
+                                                      user.banner ==
+                                                          Constants
+                                                              .bannerDefault
+                                                  ? const Center(
+                                                      child: Icon(
+                                                        Icons
+                                                            .camera_alt_outlined,
+                                                        size: 40,
+                                                      ),
+                                                    )
+                                                  : Image.network(user.banner),
                                     ),
-                                    child: bannerWebFile != null
-                                        ? Image.memory(bannerWebFile!)
-                                        : bannerFile != null
-                                            ? Image.file(bannerFile!)
-                                            : user.banner.isEmpty ||
-                                                    user.banner ==
-                                                        Constants.bannerDefault
-                                                ? const Center(
-                                                    child: Icon(
-                                                      Icons.camera_alt_outlined,
-                                                      size: 40,
-                                                    ),
-                                                  )
-                                                : Image.network(user.banner),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 20,
-                                left: 20,
-                                child: GestureDetector(
-                                  onTap: selectProfileImage,
-                                  child: profileWebFile != null
-                                      ? CircleAvatar(
-                                          backgroundImage:
-                                              MemoryImage(profileWebFile!),
-                                          radius: 32,
-                                        )
-                                      : profileFile != null
-                                          ? CircleAvatar(
-                                              backgroundImage:
-                                                  FileImage(profileFile!),
-                                              radius: 32,
-                                            )
-                                          : CircleAvatar(
-                                              backgroundImage:
-                                                  NetworkImage(user.profilePic),
-                                              radius: 32,
-                                            ),
+                                Positioned(
+                                  bottom: 20,
+                                  left: 20,
+                                  child: GestureDetector(
+                                    onTap: selectProfileImage,
+                                    child: profileWebFile != null
+                                        ? CircleAvatar(
+                                            backgroundImage:
+                                                MemoryImage(profileWebFile!),
+                                            radius: 32,
+                                          )
+                                        : profileFile != null
+                                            ? CircleAvatar(
+                                                backgroundImage:
+                                                    FileImage(profileFile!),
+                                                radius: 32,
+                                              )
+                                            : CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    user.profilePic),
+                                                radius: 32,
+                                              ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: 'Name',
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.blue),
-                              borderRadius: BorderRadius.circular(10),
+                              ],
                             ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(18),
                           ),
-                        ),
-                      ],
+                          TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              hintText: 'Name',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.blue),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.all(18),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           ),
-          // ),
           loading: () => const Loader(),
           error: (error, stackTrace) => ErrorText(
             error: error.toString(),

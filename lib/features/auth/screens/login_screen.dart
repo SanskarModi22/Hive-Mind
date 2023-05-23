@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/common/sign_in_button.dart';
 import '../../../core/constants/constants.dart';
+import '../../../responsive/responsive.dart';
 import '../controller/auth_controller.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -36,31 +37,35 @@ class LoginScreen extends ConsumerWidget {
       ),
       body: isLoading
           ? const Loader()
-          : Column(
-              children: [
-                const SizedBox(height: 30),
-                const Text(
-                  'Dive into anything',
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5),
+          : Center(
+              child: Responsive(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Dive into anything',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        Constants.loginEmotePath,
+                        height: 400,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Responsive(child: SignInButton()),
+                  ],
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    Constants.loginEmotePath,
-                    height: 400,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SignInButton(),
-              ],
+              ),
             ),
     );
   }

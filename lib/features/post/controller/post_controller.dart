@@ -147,7 +147,7 @@ class PostController extends StateNotifier<bool> {
       path: 'posts/${selectedCommunity.name}',
       id: postId,
       file: file,
-      // webFile: webFile,
+      webFile: webFile,
     );
 
     imageRes.fold((l) => showSnackBar(context: context, message: l.message),
