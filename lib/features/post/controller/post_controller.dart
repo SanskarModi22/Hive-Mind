@@ -32,10 +32,10 @@ final userPostsProvider =
   return postController.fetchUserPosts(communities);
 });
 
-// final guestPostsProvider = StreamProvider((ref) {
-//   final postController = ref.watch(postControllerProvider.notifier);
-//   return postController.fetchGuestPosts();
-// });
+final guestPostsProvider = StreamProvider((ref) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchGuestPosts();
+});
 
 final getPostByIdProvider = StreamProvider.family((ref, String postId) {
   final postController = ref.watch(postControllerProvider.notifier);
@@ -187,9 +187,9 @@ class PostController extends StateNotifier<bool> {
     return Stream.value([]);
   }
 
-  // Stream<List<Post>> fetchGuestPosts() {
-  //   return _postRepository.fetchGuestPosts();
-  // }
+  Stream<List<Post>> fetchGuestPosts() {
+    return _postRepository.fetchGuestPosts();
+  }
 
   void deletePost(Post post, BuildContext context) async {
     final res = await _postRepository.deletePost(post);

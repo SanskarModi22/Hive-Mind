@@ -33,9 +33,9 @@ class AuthController extends StateNotifier<bool> {
         _ref = ref,
         super(false); //Initially the loading is not happening
   Stream<User?> get authStateChange => _authRepository.authStateChange;
-  void signInWithGoogle(BuildContext context) async {
+  void signInWithGoogle(BuildContext context, bool isFromLogin) async {
     state = true;
-    final user = await _authRepository.signInWithGoogle();
+    final user = await _authRepository.signInWithGoogle(isFromLogin);
     state = false;
     user.fold(
         (l) => showSnackBar(context: context, message: l.message),

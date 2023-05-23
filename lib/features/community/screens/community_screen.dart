@@ -26,6 +26,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
             data: (community) => NestedScrollView(
@@ -69,41 +70,42 @@ class CommunityScreen extends ConsumerWidget {
                                 fontSize: 19.0,
                                 fontWeight: FontWeight.bold,
                               ),
-                              community.mods.contains(user.uid)
-                                  ? OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
+                              if (!isGuest)
+                                community.mods.contains(user.uid)
+                                    ? OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 25,
+                                          ),
+                                        ),
+                                        onPressed: () =>
+                                            navigateToModTools(context),
+                                        child: const CustomText(
+                                          text: "Mod Tools",
+                                        ),
+                                      )
+                                    : OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(20)),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 25,
+                                                BorderRadius.circular(20),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 25,
+                                          ),
+                                        ),
+                                        onPressed: () => joinCommunity(
+                                            ref, community, context),
+                                        child: CustomText(
+                                          text: community.members
+                                                  .contains(user.uid)
+                                              ? "Joined"
+                                              : "Join",
                                         ),
                                       ),
-                                      onPressed: () =>
-                                          navigateToModTools(context),
-                                      child: const CustomText(
-                                        text: "Mod Tools",
-                                      ),
-                                    )
-                                  : OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 25,
-                                        ),
-                                      ),
-                                      onPressed: () => joinCommunity(
-                                          ref, community, context),
-                                      child: CustomText(
-                                        text:
-                                            community.members.contains(user.uid)
-                                                ? "Joined"
-                                                : "Join",
-                                      ),
-                                    ),
                             ],
                           ),
                           Padding(

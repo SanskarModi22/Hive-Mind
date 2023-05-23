@@ -6,9 +6,15 @@ import '../../theme/pallete.dart';
 import '../constants/constants.dart';
 
 class SignInButton extends ConsumerWidget {
-  const SignInButton({super.key});
+  final bool isFromLogin;
+  const SignInButton({
+    super.key,
+    this.isFromLogin = true,
+  });
   void _signInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControllerProvider.notifier).signInWithGoogle(context);
+    ref
+        .read(authControllerProvider.notifier)
+        .signInWithGoogle(context, isFromLogin);
     //This give us access to auth controller class
   }
 
